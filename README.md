@@ -15,4 +15,4 @@ The goal of this tutorial is to understand the principles of the three Lanczos-b
 Tokuro Shimokawa (OIST)
 
 ## Acknowledgement
-Our python ED codes are based on [TITPACK ver 2](https://ma.issp.u-tokyo.ac.jp/en/app/452). We also used [Dr. Ryui Kaneko's Python ED codes](https://github.com/ryuikaneko/exact_diagonalization) as references.
+Our python ED codes are based on [TITPACK ver 2](https://ma.issp.u-tokyo.ac.jp/en/app/452). We used [Dr. Ryui Kaneko's Python ED codes](https://github.com/ryuikaneko/exact_diagonalization) as references. We also thanks to Dr. Katsuhiro Morita for checking the reliability of our Finite-Temperature Lanczos code.
