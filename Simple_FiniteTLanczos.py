@@ -35,7 +35,7 @@ def simple_FTL_nosz_conserv(R,M,Jxx,Jzz,list_isite1,list_isite2,N,Nint,seed0):
 
     Nhilbert = 2**N
     epsilons = np.zeros((R,M),dtype=float)
-    v1psi = np.zeros((R,M),dtype=float)
+    vphi = np.zeros((R,M),dtype=float)
     for r in range(R): # random sampling
         np.random.seed(seed=seed0+r)
                
@@ -43,8 +43,8 @@ def simple_FTL_nosz_conserv(R,M,Jxx,Jzz,list_isite1,list_isite2,N,Nint,seed0):
         betas = [0.]                             #Off-diagonal parts of the trigonal matrix
         v1 = (1+1)*np.random.rand(Nhilbert)-1    #Initial random vector, |phi_0^(r)>
         v1 /= np.linalg.norm(v1)                 #normalization
-        v0 = np.zeros(Nhilbert, dtype=float)     #new Lanczos vector
-        w  = np.zeros(Nhilbert, dtype=float)
+        v0 = np.zeros(Nhilbert, dtype=float)     #Lanczos vector
+        w  = np.zeros(Nhilbert, dtype=float)     #Lanczos vector
 
         alpha = 0.
         beta = 0.
@@ -63,11 +63,11 @@ def simple_FTL_nosz_conserv(R,M,Jxx,Jzz,list_isite1,list_isite2,N,Nint,seed0):
         t_eigs,t_vecs = scipy.linalg.eigh_tridiagonal(alphas,betas[1:-1])
         epsilons[r,:]=t_eigs[:]/4 
         minene = min(t_eigs)/4
-        v1psi[r,:]=t_vecs[0,:] # The 0-th component of the eigenvector, <V_0^(r)|phi_a^(r)>
+        vphi[r,:]=t_vecs[0,:] # The 0-th component of the eigenvector, <V_0^(r)|phi_a^(r)>
 
-    return epsilons,v1psi,minene
+    return epsilons,vphi,minene
 
-def calc_Tdep_ene(R,M,epsilons,v1psi,minene):
+def calc_Tdep_ene(R,M,epsilons,vphi,minene):
      
      TdepEne = np.zeros((2000,2),dtype=float)
      epsilons0 = epsilons - minene
@@ -79,14 +79,14 @@ def calc_Tdep_ene(R,M,epsilons,v1psi,minene):
 
          for r in range(R):
              for a in range(M):
-                 PartZ += np.exp(-beta*epsilons0[r,a])*abs(v1psi[r,a])**2      
-                 ene  +=  epsilons0[r,a]*np.exp(-beta*epsilons0[r,a])*abs(v1psi[r,a])**2
+                 PartZ += np.exp(-beta*epsilons0[r,a])*abs(vphi[r,a])**2      
+                 ene  +=  epsilons0[r,a]*np.exp(-beta*epsilons0[r,a])*abs(vphi[r,a])**2
 
          TdepEne[T0,:] =T, ene/PartZ+minene 
 
      return TdepEne
 
-def calc_Tdep_C(R,M,epsilons,v1psi,minene,TdepEne):
+def calc_Tdep_C(R,M,epsilons,vphi,minene,TdepEne):
  
     TdepC = np.zeros((2000,2),dtype=float)
     epsilons0 = epsilons - minene
@@ -98,8 +98,8 @@ def calc_Tdep_C(R,M,epsilons,v1psi,minene,TdepEne):
 
         for r in range(R):
             for a in range(M):
-                PartZ += np.exp(-beta*epsilons0[r,a])*abs(v1psi[r,a])**2      
-                C  +=  (abs(epsilons[r,a])**2)*np.exp(-beta*epsilons0[r,a])*abs(v1psi[r,a])**2
+                PartZ += np.exp(-beta*epsilons0[r,a])*abs(vphi[r,a])**2      
+                C  +=  (abs(epsilons[r,a])**2)*np.exp(-beta*epsilons0[r,a])*abs(vphi[r,a])**2
 
         TdepC[T0,:] = T, C/PartZ/T/T - abs(TdepEne[T0,1])**2/T/T 
 
@@ -152,9 +152,9 @@ def main(seed0):
     print("Nint=",Nint)
 
     start = time.time()
-    epsilons, v1psi, minene = simple_FTL_nosz_conserv(R,M,Jxx,Jzz,list_isite1,list_isite2,N,Nint,seed0)
-    TdepEne = calc_Tdep_ene(R,M,epsilons,v1psi,minene)
-    TdepC = calc_Tdep_C(R,M,epsilons,v1psi,minene,TdepEne)
+    epsilons, vphi, minene = simple_FTL_nosz_conserv(R,M,Jxx,Jzz,list_isite1,list_isite2,N,Nint,seed0)
+    TdepEne = calc_Tdep_ene(R,M,epsilons,vphi,minene)
+    TdepC = calc_Tdep_C(R,M,epsilons,vphi,minene,TdepEne)
     TdepEne[:,1] = TdepEne[:,1]/N #per site
     TdepC[:,1] = TdepC[:,1]/N     #per site
     end = time.time()
