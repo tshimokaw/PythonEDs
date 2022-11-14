@@ -131,16 +131,16 @@ def sz_spin_dynamics(itr_dsf,qx,GS,Jxx,Jzz,list_isite1,list_isite2,N,Nint,Nhilbe
          ii = list_1[n]
          tmp[0:2]=0.0
 
-         for k in range(N):
-           is1 = 1<<k
+         for i in range(N): #We define R_i=i for 1D chain
+           is1 = 1<<i
            ibit = ii & is1
 
-           if(ibit==is1): #site-k has up spin
-              tmp[0] += np.cos(qx*k)
-              tmp[1] += np.sin(qx*k)
+           if(ibit==is1): #site-i has up spin
+              tmp[0] += np.cos(qx*i)
+              tmp[1] += np.sin(qx*i)
            else:
-              tmp[0] -= np.cos(qx*k)
-              tmp[1] -= np.sin(qx*k)   
+              tmp[0] -= np.cos(qx*i)
+              tmp[1] -= np.sin(qx*i)   
 
          v1[n] = GS[n]*tmp[0]/2.0 + 1.0j*GS[n]*tmp[1]/2.0 
 
