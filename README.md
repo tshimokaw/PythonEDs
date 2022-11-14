@@ -6,7 +6,8 @@ The goal of this tutorial is to understand the principles of the three Lanczos-b
 
 
 ## Lecture notes
-[Lecture_Notes.pdf](https://github.com/tshimokaw/PythonEDs/files/9996528/Lecture_Notes.pdf)
+[Lecture_Notes_v2.pdf](https://github.com/tshimokaw/PythonEDs/files/10002863/Lecture_Notes_v2.pdf)
+
 
 
 
