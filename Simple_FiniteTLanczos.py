@@ -9,7 +9,7 @@ import time
 from matplotlib import pyplot
 
 def ham_to_vec_nosz_conserv(w,v1,Jxx,Jzz,list_isite1,list_isite2,N,Nint,Nhilbert):
-    w = np.zeros(Nhilbert,dtype=float)
+    w = np.zeros(Nhilbert,dtype=float) #output vector
 
     for n in range(Nhilbert):  #loop for all basis state (from 0 to 2**N-1)
        ii = n                  #n-th basis
